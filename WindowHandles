@@ -1,0 +1,42 @@
+package introduction;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.time.Duration;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+public class WindowHandles {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver driver=new ChromeDriver();
+		driver.get("https://www.rahulshettyacademy.com/loginpagePractise");
+		driver.findElement(By.className("blinkingText")).click();
+		
+		//we need to selenium explicitly that tab has been switched now.
+		Set<String>Windows=driver.getWindowHandles();       //it has-> [parent_ID, child_ID]
+		Iterator<String>it=Windows.iterator();
+		String ParentID=it.next();            //ek bar it.next peparent ki ID dega aur 2 baar krne pe child ki ID
+		String childID=it.next();
+		
+		driver.switchTo().window(childID);
+		
+        System.out.println(
+        		driver.findElement(By.cssSelector(".im-para.red")).getText()
+        		);
+        String emailID=   driver.findElement(By.cssSelector(".im-para.red")).getText().split("at")[1].trim().split(" ")[0];
+        driver.switchTo().window(ParentID);
+        driver.findElement(By.id("username")).sendKeys(emailID);
+        
+        //parent se child window me gaya-> waha se email ko split aur trim k use karke laya
+        //usko fir box me enter kiya wapis 
+	}
+
+}
